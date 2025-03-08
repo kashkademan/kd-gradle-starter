@@ -1,0 +1,57 @@
+//apply from: 'build.gradle'
+
+task "hello"
+hello {
+    description = "hello world"
+    group = "javaguru"
+}
+
+task hey (description: "hey world", group: "javaguru") {
+    println "Gradle T2: ${gradle.hashCode()}, project T2: ${project.hashCode()}, rootProject T2: ${rootProject.hashCode()}."
+
+    doLast {
+        println "do last"
+    }
+
+    doFirst {
+        println "do first 1"
+    }
+
+    doFirst {
+        println "do first"
+    }
+
+    println "description: ${description}, group: ${group}, action: ${actions.size()}."
+}
+
+task "task1" {
+    println "task 1-1"
+    println("some string")
+//    println(ext.currentDate)
+}
+
+task task2 {
+    println "task 2-2"
+}
+task task3 {
+    println "task 3-3"
+}
+task task4 {
+    println "task 4-4"
+}
+task task5 {
+    println "task 5-5"
+}
+
+task2.dependsOn task3
+task3.dependsOn task4
+
+task4.finalizedBy task1
+
+gradle.taskGraph.whenReady {
+    TaskExecutionGraph graph ->
+        println "Graph: "
+        graph.allTasks.each { Task it->
+            println "${it.name}"
+        }
+}

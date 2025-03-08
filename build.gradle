@@ -1,0 +1,52 @@
+import java.time.LocalDate
+
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+//    maven {
+//        name "nexus"
+//        uri "https://something/repository"
+//    }
+    mavenCentral()
+}
+
+//allprojects {
+//    repositories {
+//        mavenCentral()
+//    }
+//}
+
+ext {
+    currentDate = LocalDate.now()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+//    implementation group: 'org.springframework', name: 'spring-webmvc', version: '6.0.10'
+    implementation 'org.springframework:spring-webmvc:6.0.10'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+wrapper {
+    gradleVersion("8.10")
+}
+
+apply from: 'script.gradle'
+apply plugin: CustomPlagin
+println(ext.currentDate)
+
+class CustomPlagin implements Plugin<Project> {
+    @Override
+    public void apply(Project target) {
+        println("This is a custom plugin")
+    }
+}
